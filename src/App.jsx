@@ -117,7 +117,7 @@ function EntryAd({ onClose, data, setData }) {
     // Log ad revenue
     const rev = [{ id:genId(), type:"ad_view", amount:Math.round(AD_CPM*100), adId:ad.id, brand:ad.brand, at:Date.now() }, ...data.revenue];
     const updated = { ...data, revenue:rev };
-    setData(updated); saveData(updated);
+    setData(updated); 
     onClose();
   }
 
@@ -391,7 +391,7 @@ function ThreadCard({ s, data, setData, showTip }) {
     const rev = [{ id:genId(), type:"tip", amount:500, submissionId:s.id, at:Date.now() }, ...(data?.revenue||[])];
     const subs = (data?.submissions||[]).map(x=>x.id===s.id?{...x,tipped:true}:x);
     const updated = { ...data, submissions:subs, revenue:rev };
-    setData(updated); saveData(updated);
+    setData(updated); 
   }
   return (
     <>
@@ -483,7 +483,7 @@ function LoginView({ data, setData, setCurrentUser, setView }) {
       if (data.users.find(u=>u.email===form.email)) { setErr("Email already registered."); return; }
       const user = { id:genId(), name:form.name.trim(), email:form.email.trim(), password:form.password };
       const updated = { ...data, users:[...data.users, user] };
-      setData(updated); saveData(updated); setCurrentUser(user); setView("home");
+      setData(updated);  setCurrentUser(user); setView("home");
     } else {
       const user = data.users.find(u=>u.email===form.email&&u.password===form.password);
       if (!user) { setErr("Wrong email or password."); return; }
@@ -538,7 +538,7 @@ function AdminView({ data, setData }) {
     setSending(s=>({...s,[id]:true}));
     setTimeout(()=>{
       const updated={...data,submissions:data.submissions.map(s=>s.id===id?{...s,reply:text,status:"replied",repliedAt:Date.now()}:s)};
-      setData(updated); saveData(updated); setReplyDraft(d=>({...d,[id]:""})); setSending(s=>({...s,[id]:false}));
+      setData(updated);  setReplyDraft(d=>({...d,[id]:""})); setSending(s=>({...s,[id]:false}));
     },400);
   }
   function del(id) { const u={...data,submissions:data.submissions.filter(s=>s.id!==id)}; setData(u); saveData(u); }
