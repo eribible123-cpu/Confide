@@ -15,9 +15,9 @@ const AD_CPM = 0.002; // $0.002 per view (simulated)
 const LAST_VISIT_KEY = "confide_last_visit";
 
 const PLANS = {
-  free:  { id:"free",  label:"Free",          price:0,  priceLabel:"Free",   desc:"Submit with no guarantee of a reply.", badge:null },
-  reply: { id:"reply", label:"Pay-per-Reply",  price:9,  priceLabel:"$9",     desc:"One guaranteed personal reply.", badge:"Most popular" },
-  sub:   { id:"sub",   label:"Subscriber",     price:15, priceLabel:"$15/mo", desc:"Priority queue, unlimited replies.", badge:"Best value" },
+  free:  { id:"free",  label:"Free",          price:0,   priceLabel:"Free",      desc:"Submit with no guarantee of a reply.", badge:null },
+  reply: { id:"reply", label:"Pay-per-Reply",  price:50,  priceLabel:"GHS 50",    desc:"One guaranteed personal reply.", badge:"Most popular" },
+  sub:   { id:"sub",   label:"Subscriber",     price:100, priceLabel:"GHS 100/mo",desc:"Priority queue, unlimited replies.", badge:"Best value" },
 };
 const TIP_AMOUNTS = [3, 5, 10, 20];
 
