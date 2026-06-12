@@ -169,37 +169,32 @@ function BannerAd({ style }) {
 }
 
 // ─── Payment Modal ─────────────────────────────────────────────────────────────
-function PaymentModal({ amount, label, onSuccess, onCancel }) {
-  const [card, setCard] = useState({ num:"", exp:"", cvc:"" });
-  const [processing, setProcessing] = useState(false);
-  const [err, setErr] = useState("");
-  function pay() {
-    if (card.num.replace(/\s/g,"").length < 16) { setErr("Enter a valid card number."); return; }
-    if (!card.exp||!card.cvc) { setErr("Fill in all fields."); return; }
-    setProcessing(true); setTimeout(()=>{ setProcessing(false); onSuccess(); }, 1200);
-  }
+function PaymentModal({ amount, label, onSuccess, onCancel, email }) {
+  useEffect(() => {
+    const handler = window.PaystackPop.setup({
+      key: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY,
+      email: email || 'anonymous@confide.app',
+      amount: amount * 100,
+      currency: 'GHS',
+      callback: function(response) {
+        if (response.status === 'success') onSuccess();
+      },
+      onClose: function() {
+        onCancel();
+      }
+    });
+    handler.openIframe();
+  }, []);
+
   return (
-    <div style={{ position:"fixed", inset:0, background:"rgba(26,22,18,0.7)", zIndex:200, display:"flex", alignItems:"center", justifyContent:"center", padding:16 }}>
-      <div style={{ background:C.white, borderRadius:14, padding:32, width:"100%", maxWidth:380, boxShadow:"0 20px 60px rgba(0,0,0,0.3)" }}>
-        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:24 }}>
-          <div><div className="display" style={{ fontSize:20, marginBottom:2 }}>Complete payment</div><div style={{ color:C.muted, fontSize:13 }}>Simulated checkout</div></div>
-          <div style={{ fontSize:22, fontWeight:700, color:C.rust }}>${amount}</div>
-        </div>
-        <div style={{ background:C.cream, borderRadius:8, padding:"10px 14px", marginBottom:20, fontSize:13, color:C.muted }}>{label}</div>
-        <div style={{ marginBottom:14 }}><label style={lbl}>Card number</label><input value={card.num} onChange={e=>setCard(c=>({...c,num:e.target.value}))} placeholder="4242 4242 4242 4242" style={inp} /></div>
-        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12, marginBottom:20 }}>
-          <div><label style={lbl}>Expiry</label><input value={card.exp} onChange={e=>setCard(c=>({...c,exp:e.target.value}))} placeholder="MM/YY" style={inp} /></div>
-          <div><label style={lbl}>CVC</label><input value={card.cvc} onChange={e=>setCard(c=>({...c,cvc:e.target.value}))} placeholder="123" style={inp} /></div>
-        </div>
-        {err && <p style={{ color:C.rust, fontSize:13, marginBottom:12 }}>{err}</p>}
-        <button onClick={pay} disabled={processing} style={{ width:"100%", background:C.rust, color:C.white, border:"none", padding:"13px", borderRadius:8, fontSize:15, fontWeight:600, marginBottom:10 }}>{processing?"Processing…":`Pay $${amount}`}</button>
-        <button onClick={onCancel} style={{ width:"100%", background:"none", border:`1px solid ${C.border}`, color:C.muted, padding:"10px", borderRadius:8, fontSize:14 }}>Cancel</button>
-        <p style={{ textAlign:"center", color:C.muted, fontSize:11, marginTop:12 }}>🔒 Demo only — no real charge.</p>
+    <div style={{ position:"fixed", inset:0, background:"rgba(26,22,18,0.7)", zIndex:200, display:"flex", alignItems:"center", justifyContent:"center" }}>
+      <div style={{ background:C.white, borderRadius:14, padding:32, textAlign:"center" }}>
+        <p style={{ marginBottom:16 }}>Opening payment window...</p>
+        <button onClick={onCancel} style={{ background:"none", border:`1px solid ${C.border}`, padding:"10px 20px", borderRadius:8 }}>Cancel</button>
       </div>
     </div>
   );
 }
-
 // ─── Tip Modal ─────────────────────────────────────────────────────────────────
 function TipModal({ submission, onSuccess, onCancel }) {
   const [amount, setAmount] = useState(5);
