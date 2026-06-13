@@ -173,7 +173,7 @@ function PaymentModal({ amount, label, onSuccess, onCancel, email }) {
   useEffect(() => {
       console.log('Paystack key:', import.meta.env.VITE_PAYSTACK_PUBLIC_KEY);
     const handler = window.PaystackPop.setup({
-      key: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY || '',
+      key: 'pk_test_51TgzSUAZWYorDmENjUiFUYZCxn6iYCtOT9F8QkzsGUrRjdC0VHZ8TDIC2pMgR6d7TQqaB7BQE4dofeuhXoT7e7k700yz4xX6ig'
       email: email || 'anonymous@confide.app',
       amount: amount * 100,
       currency: 'GHS',
