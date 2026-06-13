@@ -171,8 +171,9 @@ function BannerAd({ style }) {
 // ─── Payment Modal ─────────────────────────────────────────────────────────────
 function PaymentModal({ amount, label, onSuccess, onCancel, email }) {
   useEffect(() => {
+      console.log('Paystack key:', import.meta.env.VITE_PAYSTACK_PUBLIC_KEY);
     const handler = window.PaystackPop.setup({
-      key: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY,
+      key: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY || '',
       email: email || 'anonymous@confide.app',
       amount: amount * 100,
       currency: 'GHS',
